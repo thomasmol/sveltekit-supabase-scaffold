@@ -34,8 +34,8 @@
 	</div>
 	<form
 		on:submit|preventDefault={handleLogin}
-		class="mx-auto flex max-w-lg flex-col rounded-md border p-10 shadow bg-white ">
-		<label for="email" class="text-slate-700">Email</label>
+		class="mx-auto flex max-w-lg flex-col rounded-lg border bg-white py-8 px-10 shadow-sm ">
+		<label for="email" class="text-slate-700 font-medium">Email</label>
 		<input
 			bind:value={email}
 			type="email"
@@ -43,8 +43,8 @@
 			autocomplete="email"
 			placeholder=""
 			required
-			class="mb-4 rounded border-slate-300 outline-none focus:border-teal-500 focus:ring-teal-400" />
-		<label for="password" class="text-slate-700">Password</label>
+			class="mb-4 rounded shadow-sm border-slate-300 outline-none focus:border-teal-500 focus:ring-teal-400" />
+		<label for="password" class="text-slate-700 font-medium">Password</label>
 		<input
 			bind:value={password}
 			type="password"
@@ -52,17 +52,23 @@
 			autocomplete="current-password"
 			placeholder=""
 			required
-			class="mb-4 rounded border-slate-300 outline-none focus:border-teal-500 focus:ring-teal-400" />
+			class="mb-4 rounded shadow-sm border-slate-300 outline-none focus:border-teal-500 focus:ring-teal-400" />
 		{#if errorMessage}
-			<p class="mb-4 rounded border border-red-300 bg-red-200 p-1">
+			<p class="mb-4 rounded text-red-800 p-1">
 				{errorMessage}, please try again.
 			</p>
 		{/if}
 		{#if !loading}
-			<button type="submit" class="rounded bg-teal-500 py-2 px-3 text-white">Login</button>
+			<button type="submit" class="rounded bg-teal-500 py-2 px-3 text-white hover:bg-teal-600">Login</button>
 		{:else}
-			<button type="button" class="rounded bg-teal-500 py-2 px-3 text-white inline-flex items-cente" disabled
+			<button type="button" class="rounded bg-teal-500 py-2 px-3 text-white inline-flex items-center justify-center" disabled
 				><CircularLoadingIndicator />Processing...</button>
-		{/if}
+		{/if}		
+		<p class="mt-6 text-slate-700">
+			Not registered yet? <a
+				href="/register"
+				class="font-medium text-teal-700 hover:text-teal-800">Register here</a>
+		</p>
 	</form>
+
 </section>

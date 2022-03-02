@@ -1,7 +1,14 @@
-<script lang="ts">
-import { goto } from '$app/navigation';
+<script lang=ts context=module>
+	 import { authGuard } from '$lib/guards';
 
-	import { user } from '$lib/stores';
+  export async function load({ url }) {
+    return await authGuard({ url });
+  }
+</script>
+
+<script lang="ts">
+
+	import { user } from '$lib/stores/auth';
 	import supabase from '$lib/supabase';
 
 	import '../app.css';

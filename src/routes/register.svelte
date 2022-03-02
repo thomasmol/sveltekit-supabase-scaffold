@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import supabase from '$lib/supabase';
-	import { user } from '$lib/stores';
+	import { user } from '$lib/stores/auth';
 	import CircularLoadingIndicator from '$lib/components/CircularLoadingIndicator.svelte';
 
 	let firstName = '';
@@ -39,7 +39,8 @@
 
 <section class="min-w-screen min-h-screen bg-slate-50">
 	<div class="py-10 text-center">
-		<h1 class="text-xl font-medium text-slate-800">Register a new account</h1>
+		<h1 class="mb-4 text-4xl font-medium text-slate-800">Welcome to ...</h1>
+		<p class="text-slate-600">Register a new account to start.</p>
 	</div>
 	<form
 		on:submit|preventDefault={handleRegistration}
@@ -86,12 +87,14 @@
 			</p>
 		{/if}
 		{#if !loading}
-			<button type="submit" class="rounded bg-teal-500 py-2 px-3 text-white hover:bg-teal-600"
-				>Register</button>
+			<button
+				type="submit"
+				class="rounded bg-teal-500 py-2 px-3 text-white transition ease-in-out hover:bg-teal-600"
+				>Create account</button>
 		{:else}
 			<button
 				type="button"
-				class="rounded bg-teal-500 py-2 px-3 text-white inline-flex items-center justify-center"
+				class="rounded bg-teal-500 py-2 px-3 text-white inline-flex items-center justify-center transition ease-in-out"
 				disabled><CircularLoadingIndicator />Processing...</button>
 		{/if}
 		<p class="mt-6 text-slate-700">

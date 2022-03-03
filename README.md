@@ -87,12 +87,12 @@ npx degit ThomasMol/sveltekit-supabase-scaffold sveltekit-app
 npm install
 ```
 
-4. Setup your .env file
+5. Setup your .env file
 
-Change the filename of ```.env.example``` to ```.env```.
+Change the filename of ```.env.example``` to ```.env``` (or create one).
 In your Supabase project go to ```settings > API ```, and copy the ```anon public``` key and paste it in the ```.env``` file as the `SUPABASE_ANON_KEY` environment variable. Copy your Supabase ```URL``` and paste it in the ```.env``` file as well, as the `SUPABASE_URL` environment variable.
 
-5. Run your SvelteKit app
+6. Run your SvelteKit app
 ```bash
 npm run dev
 ```

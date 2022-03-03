@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import supabase from '$lib/supabase';
 	import { user } from '$lib/stores/auth';
-	import CircularLoadingIndicator from '$lib/components/CircularLoadingIndicator.svelte';
+	import CircularLoadingIndicator from '$lib/components/svg/CircularLoadingIndicator.svelte';
 
 	let firstName = '';
 	let lastName = '';

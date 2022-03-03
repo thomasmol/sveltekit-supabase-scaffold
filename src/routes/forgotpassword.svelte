@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import supabase from '$lib/supabase';
-	import CircularLoadingIndicator from '$lib/components/CircularLoadingIndicator.svelte';
+	import CircularLoadingIndicator from '$lib/components/svg/CircularLoadingIndicator.svelte';
 
 	let email = '';
 	let loading = false;

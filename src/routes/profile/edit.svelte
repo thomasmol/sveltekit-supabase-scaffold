@@ -1,6 +1,6 @@
 <script lang="ts">
 	import supabase from '$lib/supabase';
-	import CircularLoadingIndicator from '$lib/components/CircularLoadingIndicator.svelte';
+	import CircularLoadingIndicator from '$lib/components/svg/CircularLoadingIndicator.svelte';
 	import { user } from '$lib/stores/auth';
 	import { createEventDispatcher } from 'svelte';
 	import EmptyProfilePicture from '$lib/components/svg/EmptyProfilePicture.svelte';

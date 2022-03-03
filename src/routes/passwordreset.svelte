@@ -1,7 +1,7 @@
 
 <script lang="ts">
 	import supabase from '$lib/supabase';
-	import CircularLoadingIndicator from '$lib/components/CircularLoadingIndicator.svelte';
+	import CircularLoadingIndicator from '$lib/components/svg/CircularLoadingIndicator.svelte';
   import { goto } from '$app/navigation';
 
 	let password = '';

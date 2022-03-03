@@ -1,33 +1,25 @@
-<script lang="ts" context="module">
-	/**
-	 * @type {import('@sveltejs/kit').Load}
-	 */
-	export async function load({ params, url, fetch, session, context }) {
-		const { data, error } = await supabase.from('profiles').select('*').limit(1).single();
-
-		if (!error) {
-			return {
-				props: {
-					profile: data
-				}
-			};
-		}
-		return {};
-	}
-</script>
-
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import supabase from '$lib/supabase';
-	import { user } from '$lib/stores/auth';
-	import { onMount } from 'svelte';
 	import CircularLoadingIndicator from '$lib/components/CircularLoadingIndicator.svelte';
-
-	export let profile;
+	import { user } from '$lib/stores/auth';
+	import EmptyProfilePicture from '$lib/components/svg/EmptyProfilePicture.svelte';
 
 	const logOut = async () => {
 		let { error } = await supabase.auth.signOut();
 		goto('/welcome');
+	};
+
+	const fetchProfile = async () => {
+		const userId: string = $user.id;
+		const { data, error } = await supabase
+			.from('profiles')
+			.select('*')
+			.eq('id', userId)
+			.limit(1)
+			.single();
+		if (error) throw error;
+		return data;
 	};
 </script>
 
@@ -36,11 +28,30 @@
 		Welcome to SvelteKit + Supabase Scaffold
 	</h1>
 	<div id="profile" class="mx-auto max-w-xl rounded-md border bg-white p-4">
-		<a on:click|preventDefault={logOut}>Logout</a>
-		{#if profile}
-		<h2>Welcome back {profile.first_name}!</h2>
-		{:else}
-		<CircularLoadingIndicator />
-		{/if}
+		<a
+			on:click|preventDefault={logOut}
+			href="/logout"
+			class="rounded-md bg-teal-50 px-3 py-2 hover:bg-teal-600">Logout</a>
+		{#await fetchProfile()}
+			<CircularLoadingIndicator />
+		{:then data}
+			<h2>Welcome back {data.first_name}!</h2>
+			{#if data.avatar_url}
+				<img
+					class="h-16 w-16 object-cover rounded-full"
+					src={data.avatar_url}
+					alt="Current profile" />
+			{:else}
+				<div class="h-16 w-16 object-cover rounded-full overflow-hidden border">
+					<EmptyProfilePicture />
+				</div>
+			{/if}
+			<a
+				href="/profile/edit"
+				class="rounded bg-teal-500 py-2 px-8 text-white transition ease-in-out hover:bg-teal-600"
+				>Edit profile</a>
+		{:catch error}
+			<p>{error}</p>
+		{/await}
 	</div>
 </section>

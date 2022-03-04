@@ -38,13 +38,13 @@
 </script>
 
 <section class="min-w-screen min-h-screen bg-slate-50">
-	<div class="py-10 text-center">
+	<div class="mx-4 py-10 text-center sm:mx-auto">
 		<h1 class="mb-4 text-4xl font-medium text-slate-800">Welcome to ...</h1>
 		<p class="text-slate-600">Register a new account to start.</p>
 	</div>
 	<form
 		on:submit|preventDefault={handleRegistration}
-		class="mx-auto flex max-w-lg flex-col rounded-lg border bg-white py-8 px-10 shadow-sm ">
+		class="mx-4 flex max-w-lg flex-col rounded-lg border bg-white py-8 px-10 shadow-sm sm:mx-auto ">
 		<label for="firstName" class="font-medium text-slate-700">First name</label>
 		<input
 			bind:value={firstName}

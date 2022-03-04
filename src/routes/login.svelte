@@ -29,13 +29,13 @@
 </script>
 
 <section class="min-w-screen min-h-screen bg-slate-50">
-	<div class="py-10 text-center">
+	<div class="mx-4 py-10 text-center sm:mx-auto">
 		<h1 class="mb-4 text-4xl font-medium text-slate-800">Welcome back!</h1>
 		<p class="text-slate-600">Please login using your credentials.</p>
 	</div>
 	<form
 		on:submit|preventDefault={handleLogin}
-		class="mx-auto flex max-w-lg flex-col rounded-lg border bg-white py-8 px-10 shadow-sm ">
+		class="mx-4 flex max-w-lg flex-col rounded-lg border bg-white py-8 px-10 shadow-sm sm:mx-auto ">
 		<label for="email" class="font-medium text-slate-700">Email</label>
 		<input
 			bind:value={email}
@@ -53,7 +53,9 @@
 			autocomplete="current-password"
 			placeholder=""
 			required
-			class="mb-4 rounded border-slate-300 shadow-sm outline-none focus:border-teal-500 focus:ring-teal-400" />
+			class="mb-2 rounded border-slate-300 shadow-sm outline-none focus:border-teal-500 focus:ring-teal-400" />
+		<a href="/forgotpassword" class="mb-4 text-right text-teal-700 hover:text-teal-800"
+			>I forgot my password</a>
 		{#if errorMessage}
 			<p class="mb-4 rounded p-1 text-red-800">
 				{errorMessage}, please try again.

@@ -4,7 +4,7 @@
 	import { user } from '$lib/stores/auth';
 	import { createEventDispatcher } from 'svelte';
 	import EmptyProfilePicture from '$lib/components/svg/EmptyProfilePicture.svelte';
-import { goto } from '$app/navigation';
+	import { goto } from '$app/navigation';
 
 	let firstName = '';
 	let lastName = '';
@@ -45,7 +45,7 @@ import { goto } from '$app/navigation';
 				.limit(1)
 				.single();
 			if (error) throw error;
-      goto('/');
+			goto('/');
 		} catch (error) {
 			console.error(error);
 		} finally {
@@ -85,11 +85,13 @@ import { goto } from '$app/navigation';
 </script>
 
 <section>
-	<h1 class="px-3 py-10 text-center text-2xl text-slate-700">Edit your profile details here</h1>
+	<h1 class="mx-4 px-3 py-10 text-center text-2xl text-slate-700 sm:mx-auto">
+		Edit your profile details here
+	</h1>
 
 	<form
 		on:submit|preventDefault={updateProfile}
-		class="mx-auto flex max-w-2xl flex-col rounded-lg border bg-white shadow-sm ">
+		class="mx-4 flex max-w-2xl flex-col rounded-lg border bg-white shadow-sm sm:mx-auto ">
 		<div class="px-8 py-4">
 			<h1 class="mb-2 text-lg text-slate-800">Profile</h1>
 			<p class="text-slate-600">
@@ -126,7 +128,7 @@ import { goto } from '$app/navigation';
           file:bg-teal-50 file:py-2
           file:px-4 file:text-sm
           file:font-semibold file:text-teal-700
-          hover:file:bg-teal-100 hover:cursor-pointer"
+          hover:cursor-pointer hover:file:bg-teal-100"
 					bind:files
 					on:change={uploadAvatar}
 					disabled={uploading}

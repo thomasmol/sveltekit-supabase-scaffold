@@ -1,8 +1,7 @@
-
 <script lang="ts">
 	import supabase from '$lib/supabase';
 	import CircularLoadingIndicator from '$lib/components/svg/CircularLoadingIndicator.svelte';
-  import { goto } from '$app/navigation';
+	import { goto } from '$app/navigation';
 
 	let password = '';
 	let loading = false;
@@ -12,13 +11,13 @@
 	const handleResetLink = async () => {
 		try {
 			loading = true;
-      const accessToken = supabase.auth['currentSession'].access_token;
+			const accessToken = supabase.auth['currentSession'].access_token;
 			const { error, data } = await supabase.auth.api.updateUser(accessToken, {
 				password: password
 			});
 			if (error) throw error;
 			successMessage = `Password changed. You can now login with your new password.`;
-      goto('/');
+			goto('/');
 		} catch (error) {
 			console.error(error);
 			errorMessage = error.message;
@@ -29,13 +28,13 @@
 </script>
 
 <section class="min-w-screen min-h-screen bg-slate-50">
-	<div class="py-10 text-center">
+	<div class="mx-4 py-10 text-center sm:mx-auto">
 		<h1 class="mb-4 text-4xl font-medium text-slate-800">Change your password</h1>
 		<p class="text-slate-600">Enter a new password.</p>
 	</div>
 	<form
 		on:submit|preventDefault={handleResetLink}
-		class="mx-auto flex max-w-lg flex-col rounded-lg border bg-white py-8 px-10 shadow-sm ">
+		class="mx-4 flex max-w-lg flex-col rounded-lg border bg-white py-8 px-10 shadow-sm sm:mx-auto ">
 		<label for="email" class="font-medium text-slate-700">Password</label>
 		<input
 			bind:value={password}

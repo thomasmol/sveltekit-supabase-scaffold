@@ -1,7 +1,6 @@
 <script lang="ts">
 	import supabase from '$lib/supabase';
 	import CircularLoadingIndicator from '$lib/components/svg/CircularLoadingIndicator.svelte';
-	import { user } from '$lib/stores/auth';
 	import { createEventDispatcher } from 'svelte';
 	import EmptyProfilePicture from '$lib/components/svg/EmptyProfilePicture.svelte';
 	import { goto } from '$app/navigation';
@@ -17,24 +16,20 @@
 	const dispatch = createEventDispatcher();
 
 	const fetchProfile = async () => {
-		const userId: string = $user.id;
-		const { data, error } = await supabase
-			.from('profiles')
-			.select('*')
-			.eq('id', userId)
-			.limit(1)
-			.single();
-		if (error) throw error;
-		firstName = data.first_name;
-		lastName = data.last_name;
-		avatarPath = data.avatar_url;
-		return data;
+		const response = await fetch('/api/profile');
+		if (response.ok) {
+			const data = await response.json();
+			firstName = data.first_name;
+			lastName = data.last_name;
+			avatarPath = data.avatar_url;
+			return data;
+		}
 	};
 
 	const updateProfile = async () => {
 		try {
 			loading = true;
-			const userId: string = $user.id;
+			const userId: string = supabase.auth.user().id;
 			const { data, error } = await supabase
 				.from('profiles')
 				.update(

@@ -34,6 +34,8 @@
   },
   "type": "module",
   "dependencies": {
-    "@supabase/supabase-js": "^1.30.7"
+    "@supabase/supabase-js": "^1.30.7",
+    "cookie": "^0.4.2",
+    "jsonwebtoken": "^8.5.1"
   }
 }

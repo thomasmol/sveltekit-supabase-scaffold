@@ -1,22 +1,18 @@
-import { user } from '$lib/stores/auth'; // stores related to app state, auth state
+export async function authGuard({ url, session }) {
+	const unguardedPaths = new Set(['/login', '/register', '/welcome', '/forgotpassword']);
+	const loggedIn: boolean = session.authenticated ? true : false;
+	const isUnguardedPath: boolean = unguardedPaths.has(url.pathname);
+	console.log('AuthGuard: ', loggedIn, isUnguardedPath, url.pathname);
 
-export async function authGuard({ url }) {
-	/* const loggedIn = user.id ? true : false;
-
-	if (
-		loggedIn &&
-		(url.pathname === '/login' || url.pathname === '/register' || url.pathname === '/welcome')
-	) {
+	if (loggedIn && isUnguardedPath) {
 		return { status: 302, redirect: '/' };
-	} else if (
-		!loggedIn &&
-		(url.pathname === '/login' || url.pathname === '/register' || url.pathname === '/welcome')
-	) {
+	} else if (!loggedIn && isUnguardedPath) {
 		return {};
-	} else {
+	} else if (loggedIn && !isUnguardedPath) {
+		return {};
+	} else if (!loggedIn && !isUnguardedPath) {
 		return { status: 302, redirect: '/welcome' };
-	} */
-  return {};
+	}
 }
 
 export default {

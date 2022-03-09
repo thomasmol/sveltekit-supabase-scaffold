@@ -1,24 +1,25 @@
-<script lang=ts context=module>
-	 import { authGuard } from '$lib/guards';
+<script lang="ts" context="module">
+	import { authGuard } from '$lib/guards';
 
-  export async function load({ url }) {
-    return await authGuard({ url });
-  }
+	export async function load({ url, session }) {
+		return { url, session };
+	} 
 </script>
 
 <script lang="ts">
-
-	import { user } from '$lib/stores/auth';
-	import supabase from '$lib/supabase';
-
 	import '../app.css';
+	import { session } from '$app/stores';
+	import { auth, setAuthCookie, unsetAuthCookie } from '$lib/supabase';
 
-	user.set(supabase.auth.user());
-
-  supabase.auth.onAuthStateChange((_, session)=>{
-    user.set(session?.user);    
-  });
-
+	auth.onAuthStateChange(async (event, _session) => {
+		await setAuthCookie(_session);
+		if (event !== 'SIGNED_OUT') {
+			session.set({ user: _session.user, authenticated: !!_session.user });
+		} else {
+			session.set({ user: undefined, authenticated: false });
+			await unsetAuthCookie();
+		}
+	});
 </script>
 
 <slot />

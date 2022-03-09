@@ -1,14 +1,28 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import supabase from '$lib/supabase';
-	import { user } from '$lib/stores/auth';
+	import { session } from '$app/stores';
 	import CircularLoadingIndicator from '$lib/components/svg/CircularLoadingIndicator.svelte';
+	import supabase from '$lib/supabase';
 
-	let email = '';
-	let password = '';
 	let loading = false;
 	let errorMessage;
+	let email;
+	let password;
 
+	/* const handleLogin2 = async (e) => {
+		loading = true;
+		const response = await fetch('/api/auth', {
+			method: 'post',
+			body:JSON.stringify({email:email, password:password}) // new FormData(e.target)
+		});
+		if (response.ok) {
+			session.set(response.body);
+			goto('/');
+		} else {
+			errorMessage = response.body;
+			loading = false;
+		}
+	}; */
 	const handleLogin = async () => {
 		try {
 			loading = true;
@@ -17,7 +31,6 @@
 				password: password
 			});
 			if (error) throw error;
-			$user = userDetails;
 			goto('/');
 		} catch (error) {
 			console.error(error);
@@ -39,6 +52,7 @@
 		<label for="email" class="font-medium text-slate-700">Email</label>
 		<input
 			bind:value={email}
+			name="email"
 			type="email"
 			id="email"
 			autocomplete="email"
@@ -48,6 +62,7 @@
 		<label for="password" class="font-medium text-slate-700">Password</label>
 		<input
 			bind:value={password}
+			name="password"
 			type="password"
 			id="password"
 			autocomplete="current-password"

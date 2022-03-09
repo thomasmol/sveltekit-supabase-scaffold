@@ -2,7 +2,6 @@
 	import { goto } from '$app/navigation';
 	import supabase from '$lib/supabase';
 	import CircularLoadingIndicator from '$lib/components/svg/CircularLoadingIndicator.svelte';
-	import { user } from '$lib/stores/auth';
 	import EmptyProfilePicture from '$lib/components/svg/EmptyProfilePicture.svelte';
 	import { clickOutside } from '$lib/clickOutside';
 
@@ -14,16 +13,12 @@
 	};
 
 	const fetchProfile = async () => {
-		const userId: string = $user.id;
-		const { data, error } = await supabase
-			.from('profiles')
-			.select('*')
-			.eq('id', userId)
-			.limit(1)
-			.single();
-		if (error) throw error;
-		return data;
+		const response = await fetch('/api/profile');
+		if (response.ok){
+			return await response.json();
+		}
 	};
+	
 </script>
 <nav class="bg-slate-100 py-4">
 	<div class="container mx-auto flex justify-between px-4">
@@ -52,7 +47,7 @@
 					{/if}
 				</button>
 			{:catch error}
-				<p>{error}</p>
+				<p>{error.message}</p>
 			{/await}
 			{#if userMenuOpen}
 				<div

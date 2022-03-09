@@ -78,21 +78,25 @@ commit;
 alter publication supabase_realtime add table profiles;
 ```
 
-3. Create new project based on this template with degit:
+3. Go to your project settings and add ```http://localhost:3000/passwordreset``` to the Additional Redirect URLs (change localhost:3000 with whatever domain you are going to use, localhost is just for dev)
+
+### Setup SvelteKit Project
+
+1. Create new project based on this template with degit:
 ```bash
 npx degit ThomasMol/sveltekit-supabase-scaffold sveltekit-app
  ```
-4. Run 
+2. Run 
 ```bash 
 npm install
 ```
 
-5. Setup your .env file
+3. Setup your .env file
 
 Change the filename of ```.env.example``` to ```.env``` (or create one).
 In your Supabase project go to ```settings > API ```, and copy the ```anon public``` key and paste it in the ```.env``` file as the `SUPABASE_ANON_KEY` environment variable. Copy your Supabase ```URL``` and paste it in the ```.env``` file as well, as the `SUPABASE_URL` environment variable.
 
-6. Run your SvelteKit app
+4. Run your SvelteKit app
 ```bash
 npm run dev
 ```

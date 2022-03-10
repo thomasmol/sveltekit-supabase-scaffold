@@ -19,7 +19,6 @@
 				password: password
 			});
 			if (error) throw error;
-			$user = userDetails;
 			const { error: profileError } = await supabase
 				.from('profiles')
 				.insert(

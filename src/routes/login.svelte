@@ -1,28 +1,13 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { session } from '$app/stores';
 	import CircularLoadingIndicator from '$lib/components/svg/CircularLoadingIndicator.svelte';
 	import supabase from '$lib/supabase';
 
-	let loading = false;
-	let errorMessage;
-	let email;
-	let password;
+	let loading: boolean = false;
+	let errorMessage: string;
+	let email: string;
+	let password: string;
 
-	/* const handleLogin2 = async (e) => {
-		loading = true;
-		const response = await fetch('/api/auth', {
-			method: 'post',
-			body:JSON.stringify({email:email, password:password}) // new FormData(e.target)
-		});
-		if (response.ok) {
-			session.set(response.body);
-			goto('/');
-		} else {
-			errorMessage = response.body;
-			loading = false;
-		}
-	}; */
 	const handleLogin = async () => {
 		try {
 			loading = true;
@@ -30,8 +15,9 @@
 				email: email,
 				password: password
 			});
+			console.log(error);
 			if (error) throw error;
-			goto('/');
+			location.reload();
 		} catch (error) {
 			console.error(error);
 			errorMessage = error.message;

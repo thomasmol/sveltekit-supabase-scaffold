@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 const ExpiryMargin = 1000;
 
 // exchange the refresh token for an access token
-async function refreshAccessToken(cookies) {
+const refreshAccessToken = async (cookies) => {
 	const { data, error } = await auth.api.refreshAccessToken(cookies.refresh_token);
 	if (error) {
 		cookies.access_token = null;
@@ -30,6 +30,7 @@ async function refreshAccessToken(cookies) {
 export const handle = async ({ event, resolve }) => {
 	const cookies = cookie.parse(event.request.headers.get('cookie') || '');
 	let setCookies = [];
+	console.log('Handle function run');
 
 	if (cookies.access_token || cookies.refresh_token) {
 		if (cookies.expires_at < Math.floor(Date.now() / 1000) + ExpiryMargin) {
@@ -47,7 +48,6 @@ export const handle = async ({ event, resolve }) => {
 		event.locals.user = { email: jwtPayload?.email, id:jwtPayload?.sub };
 	}
 	
-
 	const response = await resolve(event);
 
 	if (setCookies?.length > 0) {

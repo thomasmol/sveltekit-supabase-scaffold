@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import supabase from '$lib/supabase';
+	import supabase, { auth, unsetAuthCookie } from '$lib/supabase';
 	import CircularLoadingIndicator from '$lib/components/svg/CircularLoadingIndicator.svelte';
 	import EmptyProfilePicture from '$lib/components/svg/EmptyProfilePicture.svelte';
 	import { clickOutside } from '$lib/clickOutside';
@@ -8,8 +8,10 @@
 	let userMenuOpen = false;
 
 	const logOut = async () => {
-		let { error } = await supabase.auth.signOut();
-		goto('/welcome');
+		let { error } = await auth.signOut();
+		await unsetAuthCookie();
+		//goto('/welcome');
+		location.reload();
 	};
 
 	const fetchProfile = async () => {

@@ -26,7 +26,7 @@
 					{ returning: 'minimal' }
 				);
 			if (profileError) throw profileError;
-			goto('/');
+			location.reload();
 		} catch (error) {
 			console.error(error);
 			errorMessage = error.message;

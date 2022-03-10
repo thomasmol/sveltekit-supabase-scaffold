@@ -3,7 +3,7 @@
 	import supabase, { auth, unsetAuthCookie } from '$lib/supabase';
 	import CircularLoadingIndicator from '$lib/components/svg/CircularLoadingIndicator.svelte';
 	import EmptyProfilePicture from '$lib/components/svg/EmptyProfilePicture.svelte';
-	import { clickOutside } from '$lib/clickOutside';
+	import clickOutside from '$lib/clickOutside';
 
 	let userMenuOpen = false;
 
@@ -16,12 +16,12 @@
 
 	const fetchProfile = async () => {
 		const response = await fetch('/api/profile');
-		if (response.ok){
+		if (response.ok) {
 			return await response.json();
 		}
 	};
-	
 </script>
+
 <nav class="bg-slate-100 py-4">
 	<div class="container mx-auto flex justify-between px-4">
 		<a href="/" class="font-medium text-slate-700 hover:text-slate-900"

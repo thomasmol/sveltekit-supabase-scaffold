@@ -7,4 +7,9 @@ declare namespace App {
 	// interface Platform {}
 	// interface Session {}
 	// interface Stuff {}
+	declare namespace svelte.JSX {
+		interface HTMLProps<T> {
+			clickoutside: () => void;
+		}
+	}
 }

@@ -15,7 +15,6 @@
 				email: email,
 				password: password
 			});
-			console.log(error);
 			if (error) throw error;
 			location.reload();
 		} catch (error) {

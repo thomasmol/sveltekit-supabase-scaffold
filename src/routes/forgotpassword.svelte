@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 	import supabase from '$lib/supabase';
 	import CircularLoadingIndicator from '$lib/components/svg/CircularLoadingIndicator.svelte';
+	import PrimaryButton from '$lib/components/buttons/PrimaryButton.svelte';
 
 	let email = '';
 	let loading = false;
@@ -25,15 +26,15 @@
 	};
 </script>
 
-<section class="min-w-screen min-h-screen bg-slate-50">
+<section class="min-w-screen min-h-screen bg-slate-50 dark:bg-slate-900">
 	<div class="mx-4 py-10 text-center sm:mx-auto">
-		<h1 class="mb-4 text-4xl font-medium text-slate-800">Reset your password</h1>
-		<p class="text-slate-600">Enter your email to receive a password reset link.</p>
+		<h1 class="mb-4 text-4xl font-medium text-slate-800 dark:text-slate-50">Reset your password</h1>
+		<p class="text-slate-600 dark:text-slate-100">Enter your email to receive a password reset link.</p>
 	</div>
 	<form
 		on:submit|preventDefault={handleResetLink}
-		class="mx-4 flex max-w-lg flex-col rounded-lg border bg-white py-8 px-10 shadow-sm sm:mx-auto ">
-		<label for="email" class="font-medium text-slate-700">Email</label>
+		class="mx-4 flex max-w-lg flex-col rounded-lg border bg-white py-8 px-10 shadow-sm dark:border-slate-700 dark:bg-slate-800 sm:mx-auto ">
+		<label for="email" class="mb-2 font-medium text-slate-700 dark:text-slate-200">Email</label>
 		<input
 			bind:value={email}
 			type="email"
@@ -41,7 +42,7 @@
 			autocomplete="email"
 			placeholder=""
 			required
-			class="mb-4 rounded border-slate-300 shadow-sm outline-none focus:border-teal-500 focus:ring-teal-400" />
+			class="mb-4 rounded border-slate-300 shadow-sm outline-none focus:border-teal-500 focus:ring-teal-400 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-50" />
 		{#if errorMessage}
 			<p class="mb-4 rounded p-1 text-red-800">
 				{errorMessage}, please try again.
@@ -53,15 +54,11 @@
 			</p>
 		{/if}
 		{#if !loading}
-			<button
-				type="submit"
-				class="rounded bg-teal-500 py-2 px-3 text-white transition ease-in-out hover:bg-teal-600"
-				>Send password reset link</button>
+			<PrimaryButton type="submit" text="Send password reset link" />
 		{:else}
-			<button
-				type="button"
-				class="rounded bg-teal-500 py-2 px-3 text-white inline-flex items-center justify-center transition ease-in-out"
-				disabled><CircularLoadingIndicator />Processing...</button>
+			<PrimaryButton type="submit" text="Processing..." disabled={true}>
+				<CircularLoadingIndicator slot="icon" />
+			</PrimaryButton>
 		{/if}
 	</form>
 </section>

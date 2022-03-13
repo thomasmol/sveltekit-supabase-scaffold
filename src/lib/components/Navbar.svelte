@@ -22,9 +22,9 @@
 	};
 </script>
 
-<nav class="bg-slate-100 py-4">
+<nav class="bg-slate-100 py-4 dark:bg-slate-800">
 	<div class="container mx-auto flex justify-between px-4">
-		<a href="/" class="font-medium text-slate-700 hover:text-slate-900"
+		<a href="/" class="font-medium text-lg text-slate-700 hover:text-slate-900 dark:text-slate-50 dark:hover:text-slate-200"
 			>SvelteKit + Supabase Scaffold</a>
 		<div class="relative" use:clickOutside on:clickoutside={() => (userMenuOpen = false)}>
 			{#await fetchProfile()}
@@ -35,7 +35,7 @@
 				<button
 					type="button"
 					on:click={() => (userMenuOpen = !userMenuOpen)}
-					class="flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+					class="flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white dark:focus:ring-slate-500 focus:ring-offset-2 focus:ring-offset-gray-800"
 					id="user-menu-button"
 					aria-expanded="false"
 					aria-haspopup="true">
@@ -54,21 +54,21 @@
 			{#if userMenuOpen}
 				<div
 					role="menu"
-					class="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+					class="absolute right-0 mt-2 w-48 origin-top-right rounded-md dark:bg-slate-700 dark:ring-slate-800 bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
 					aria-orientation="vertical"
 					aria-labelledby="user-menu-button"
 					tabindex="-1">
 					<!-- Active: "bg-gray-100", Not Active: "" -->
 					<a
 						href="/profile"
-						class="block px-4 py-2 text-sm text-gray-700"
+						class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-50"
 						role="menuitem"
 						tabindex="-1"
 						id="user-menu-item-0">My Profile</a>
 					<a
 						href="/login"
 						on:click|preventDefault={logOut}
-						class="block px-4 py-2 text-sm text-gray-700"
+						class="block px-4 py-2 text-sm text-slate-700 dark:text-slate-50"
 						role="menuitem"
 						tabindex="-1"
 						id="user-menu-item-2">Logout</a>

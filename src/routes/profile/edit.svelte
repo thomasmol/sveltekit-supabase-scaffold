@@ -4,6 +4,8 @@
 	import { createEventDispatcher } from 'svelte';
 	import EmptyProfilePicture from '$lib/components/svg/EmptyProfilePicture.svelte';
 	import { goto } from '$app/navigation';
+	import PrimaryButton from '$lib/components/buttons/PrimaryButton.svelte';
+	import Navbar from '$lib/components/Navbar.svelte';
 
 	let firstName = '';
 	let lastName = '';
@@ -79,17 +81,18 @@
 	}
 </script>
 
-<section>
-	<h1 class="mx-4 px-3 py-10 text-center text-2xl text-slate-700 sm:mx-auto">
+<Navbar />
+<section class="dark:bg-slate-900 ">
+	<h1 class="mx-4 px-3 py-10 text-center text-2xl text-slate-700 dark:text-slate-100 sm:mx-auto">
 		Edit your profile details here
 	</h1>
 
 	<form
 		on:submit|preventDefault={updateProfile}
-		class="mx-4 flex max-w-2xl flex-col rounded-lg border bg-white shadow-sm sm:mx-auto ">
+		class="mx-4 flex max-w-2xl flex-col rounded-lg border bg-white  shadow-sm dark:border-slate-700 dark:bg-slate-800 sm:mx-auto ">
 		<div class="px-8 py-4">
-			<h1 class="mb-2 text-lg text-slate-800">Profile</h1>
-			<p class="text-slate-600">
+			<h1 class="mb-2 text-lg text-slate-800 dark:text-slate-100">Profile</h1>
+			<p class="text-slate-600 dark:text-slate-200">
 				This information will be displayed publicly so be careful what you share.
 			</p>
 		</div>
@@ -118,12 +121,12 @@
 				<span class="sr-only">Choose profile photo</span>
 				<input
 					type="file"
-					class="block w-full text-sm text-slate-500
-          file:mr-4 file:rounded-full file:border-0
-          file:bg-teal-50 file:py-2
-          file:px-4 file:text-sm
-          file:font-semibold file:text-teal-700
-          hover:cursor-pointer hover:file:bg-teal-100"
+					class="block w-full text-sm text-slate-500 file:mr-4
+          file:rounded-full file:border-0 file:bg-teal-50
+          file:py-2 file:px-4
+          file:text-sm file:font-semibold
+          file:text-teal-700 hover:cursor-pointer
+          hover:file:bg-teal-100 dark:text-slate-300"
 					bind:files
 					on:change={uploadAvatar}
 					disabled={uploading}
@@ -132,7 +135,8 @@
 		</div>
 		<div class="flex space-x-6 px-8 py-5">
 			<div>
-				<label for="firstName" class="font-medium text-slate-700">First name</label>
+				<label for="firstName" class="mb-2 font-medium text-slate-700 dark:text-slate-200"
+					>First name</label>
 				<input
 					bind:value={firstName}
 					type="text"
@@ -140,10 +144,11 @@
 					autocomplete="name"
 					placeholder=""
 					required
-					class=" w-full rounded border-slate-300 shadow-sm outline-none focus:border-teal-500 focus:ring-teal-400" />
+					class="mb-4 rounded border-slate-300 shadow-sm outline-none focus:border-teal-500 focus:ring-teal-400 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-50" />
 			</div>
 			<div>
-				<label for="lastName" class="font-medium text-slate-700">Last Name</label>
+				<label for="lastName" class="mb-2 font-medium text-slate-700 dark:text-slate-200"
+					>Last Name</label>
 				<input
 					bind:value={lastName}
 					type="text"
@@ -151,7 +156,7 @@
 					autocomplete="family-name"
 					placeholder=""
 					required
-					class=" w-full rounded border-slate-300 shadow-sm outline-none focus:border-teal-500 focus:ring-teal-400" />
+					class="mb-4 rounded border-slate-300 shadow-sm outline-none focus:border-teal-500 focus:ring-teal-400 dark:border-slate-600 dark:bg-slate-700 dark:text-slate-50" />
 			</div>
 		</div>
 
@@ -160,17 +165,13 @@
 				{errorMessage}, please try again.
 			</p>
 		{/if}
-		<div class="bg-slate-50 px-8 py-4 text-right">
+		<div class="bg-slate-50 px-8 py-4 text-right dark:bg-slate-700">
 			{#if !loading}
-				<button
-					type="submit"
-					class="rounded bg-teal-500 py-2 px-8 text-white transition ease-in-out hover:bg-teal-600"
-					>Save</button>
+				<PrimaryButton type="submit" text="Save" />
 			{:else}
-				<button
-					type="button"
-					class="rounded bg-teal-500 py-2 px-4 text-white inline-flex items-center justify-center transition ease-in-out"
-					disabled><CircularLoadingIndicator />Processing...</button>
+				<PrimaryButton type="submit" text="Processing..." disabled={true}>
+					<CircularLoadingIndicator slot="icon" />
+				</PrimaryButton>
 			{/if}
 		</div>
 	</form>

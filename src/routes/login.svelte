@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import PrimaryButton from '$lib/components/buttons/PrimaryButton.svelte';
 	import CircularLoadingIndicator from '$lib/components/svg/CircularLoadingIndicator.svelte';
-	import supabase from '$lib/supabase';
+  import supabaseClient from '$lib/supabase'
 
 	let loading: boolean = false;
 	let errorMessage: string;
@@ -10,9 +10,9 @@
 	let password: string;
 
 	const handleLogin = async () => {
-		try {
+	try {
 			loading = true;
-			let { user: userDetails, error } = await supabase.auth.signIn({
+			let { user: userDetails, error } = await supabaseClient.auth.signIn({
 				email: email,
 				password: password
 			});
@@ -23,7 +23,7 @@
 			errorMessage = error.message;
 		} finally {
 			loading = false;
-		}
+		} 
 	};
 </script>
 

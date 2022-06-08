@@ -1,66 +1,20 @@
-import { auth, getCookie, blankCookies } from '$lib/supabase';
-import * as cookie from 'cookie';
-import jwt from 'jsonwebtoken';
+import { handleUser, handleCallback } from '@supabase/auth-helpers-sveltekit';
+import type { GetSession, Handle } from '@sveltejs/kit';
+import { sequence } from '@sveltejs/kit/hooks';
 
-const ExpiryMargin = 1000;
+export const handle: Handle = sequence(
+	handleCallback({
+		cookieOptions: { lifetime: 1 * 365 * 24 * 60 * 60 }
+	}),
+	handleUser({
+		cookieOptions: { lifetime: 1 * 365 * 24 * 60 * 60 }
+	})
+);
 
-// exchange the refresh token for an access token
-const refreshAccessToken = async (cookies) => {
-	const { data, error } = await auth.api.refreshAccessToken(cookies.refresh_token);
-	if (error) {
-		cookies.access_token = null;
-		cookies.refresh_token = null;
-		cookies.expires_at = null;
-		throw error;
-	}
-
-	auth.setAuth(data.access_token); //needed so that server calls are authenticated
-	console.log("Refershaccesstoken: " + cookies);
-	cookies.access_token = data.access_token;
-	cookies.refresh_token = data.refresh_token;
-	cookies.expires_at = data.expires_at;
-
-	return [
-		getCookie('refresh_token', data.refresh_token, { maxAge: data.expires_in }),
-		getCookie('access_token', data.access_token, { maxAge: data.expires_in }),
-		getCookie('expires_at', data.expires_at, { maxAge: data.expires_in })
-	];
-}
-
-export const handle = async ({ event, resolve }) => {
-	const cookies = cookie.parse(event.request.headers.get('cookie') || '');
-	let setCookies = [];
-	console.log('Handle function run');
-
-	if (cookies.access_token || cookies.refresh_token) {
-		if (cookies.expires_at < Math.floor(Date.now() / 1000) + ExpiryMargin) {
-			console.log('Access token expired. Refreshing...');
-			try {
-				setCookies = await refreshAccessToken(cookies);
-			} catch (err) {
-				console.log(err);
-				setCookies = blankCookies();
-			}
-		}
-		const jwtPayload = cookies.access_token ? jwt.decode(cookies.access_token) : false;
-		auth.setAuth(cookies.access_token);
-		event.locals.authenticated = !!jwtPayload;
-		event.locals.user = { email: jwtPayload?.email, id:jwtPayload?.sub };
-	}
-	
-	const response = await resolve(event);
-
-	if (setCookies?.length > 0) {
-		setCookies.forEach((cookie) => response.headers.append('set-cookie', cookie));
-	}
-
-	return response;
-};
-
-export async function getSession(request) {
-	const { user, authenticated } = request.locals;
+export const getSession: GetSession = async (event) => {
+	const { user, accessToken } = event.locals;
 	return {
 		user,
-		authenticated
+		accessToken
 	};
-}
+};

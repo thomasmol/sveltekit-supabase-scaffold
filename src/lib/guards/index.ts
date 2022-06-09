@@ -1,6 +1,6 @@
 export async function authGuard({ url, session }) {
 	const unguardedPaths = new Set(['/login', '/register', '/welcome', '/forgotpassword']);
-	const loggedIn: boolean = session.authenticated ? true : false;
+	const loggedIn: boolean = session.user ? true : false;
 	const isUnguardedPath: boolean = unguardedPaths.has(url.pathname);
 	console.log('AuthGuard: ', loggedIn, isUnguardedPath, url.pathname);
 

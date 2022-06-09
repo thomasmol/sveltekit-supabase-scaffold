@@ -1,42 +1,12 @@
-<script>
-	import Auth from 'supabase-ui-svelte';
-	import { error, isLoading } from '@supabase/auth-helpers-svelte';
-	import supabaseClient from '$lib/supabase';
-	import { session } from '$app/stores';
-	let loadedData = [];
-	async function loadData() {
-		const { data } = await supabaseClient.from('test').select('*').single();
-		loadedData = data;
-	}
-	$: {
-		if ($session.user && $session.user.id) {
-			loadData();
-		}
-	}
+<script lang="ts">
+	import Navbar from '$lib/components/Navbar.svelte';
+
 </script>
 
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<Navbar />
+<section class="dark:bg-slate-900">
+	<h1 class="mx-4 px-3 py-10 text-center text-2xl text-slate-700 dark:text-slate-100 sm:mx-auto">
+		Welcome to the SvelteKit + Supabase Scaffold
+	</h1>
+</section>
 
-{#if !$session.user}
-	{#if $error}
-		<p>{$error.message}</p>
-	{/if}
-	<h1>{$isLoading ? `Loading...` : `Loaded!`}</h1>
-	<Auth {supabaseClient} providers={[]} />
-{:else}
-	<p>
-		<a href="/profile">[withAuthRequired]</a>
-		<a href="/protected-page">[supabaseServerClient]</a>
-		<button on:click={() => supabaseClient.auth.update({ data: { test5: 'updated' } })}>
-			Update
-		</button>
-	</p>
-
-	<button on:click={async () => await supabaseClient.auth.signOut()}>Sign out</button>
-	<h1>{$isLoading ? `Loading...` : `Loaded!`}</h1>
-	<p>user:</p>
-	<pre>{JSON.stringify($session.user, null, 2)}</pre>
-	<p>client-side data fetching with RLS</p>
-	<pre>{JSON.stringify(loadedData, null, 2)}</pre>
-{/if}

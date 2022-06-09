@@ -1,23 +1,26 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import supabase from '$lib/supabase';
+	import supabaseClient from '$lib/supabase';
 	import CircularLoadingIndicator from '$lib/components/svg/CircularLoadingIndicator.svelte';
 	import EmptyProfilePicture from '$lib/components/svg/EmptyProfilePicture.svelte';
 	import clickOutside from '$lib/clickOutside';
+import { session } from '$app/stores';
 
 	let userMenuOpen = false;
 
 	const logOut = async () => {
-		//let { error } = await supabase.supabaseClient.auth.signOut();
-		//goto('/welcome');
-		location.reload();
+		let { error } = await supabaseClient.auth.signOut();
+		goto('/welcome');
 	};
 
 	const fetchProfile = async () => {
-		const response = await fetch('/api/profile');
+		/* const response = await fetch('/api/profile');
 		if (response.ok) {
 			return await response.json();
-		}
+		} */
+		const { data, error } = await supabaseClient.from('profiles').select('*').eq('id', $session.user.id).limit(1).single();
+		if (error) throw error;
+		return data;
 	};
 </script>
 

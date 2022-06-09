@@ -16,8 +16,8 @@
 				email: email,
 				password: password
 			});
-			goto('/');
 			if (error) throw error;
+			goto('/');
 		} catch (error) {
 			console.error(error);
 			errorMessage = error.message;

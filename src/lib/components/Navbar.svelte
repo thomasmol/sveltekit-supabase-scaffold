@@ -4,7 +4,8 @@
 	import CircularLoadingIndicator from '$lib/components/svg/CircularLoadingIndicator.svelte';
 	import EmptyProfilePicture from '$lib/components/svg/EmptyProfilePicture.svelte';
 	import clickOutside from '$lib/clickOutside';
-import { session } from '$app/stores';
+	import { session } from '$app/stores';
+import { user } from '@supabase/auth-helpers-svelte';
 
 	let userMenuOpen = false;
 
@@ -18,7 +19,13 @@ import { session } from '$app/stores';
 		if (response.ok) {
 			return await response.json();
 		} */
-		const { data, error } = await supabaseClient.from('profiles').select('*').eq('id', $session.user.id).limit(1).single();
+
+		const { data, error } = await supabaseClient
+			.from('profiles')
+			.select('*')
+			.eq('id', $session.user.id)
+			.limit(1)
+			.single();
 		if (error) throw error;
 		return data;
 	};
@@ -26,9 +33,12 @@ import { session } from '$app/stores';
 
 <nav class="bg-slate-100 py-4 dark:bg-slate-800">
 	<div class="container mx-auto flex justify-between px-4">
-		<a href="/" class="font-medium text-lg text-slate-700 hover:text-slate-900 dark:text-slate-50 dark:hover:text-slate-200"
+		<a
+			href="/"
+			class="text-lg font-medium text-slate-700 hover:text-slate-900 dark:text-slate-50 dark:hover:text-slate-200"
 			>SvelteKit + Supabase Scaffold</a>
 		<div class="relative" use:clickOutside on:clickoutside={() => (userMenuOpen = false)}>
+			{#if $session.user}
 			{#await fetchProfile()}
 				<div class="h-8 w-8 p-2">
 					<CircularLoadingIndicator />
@@ -53,10 +63,11 @@ import { session } from '$app/stores';
 			{:catch error}
 				<p>{error.message}</p>
 			{/await}
+			{/if}
 			{#if userMenuOpen}
 				<div
 					role="menu"
-					class="absolute right-0 mt-2 w-48 origin-top-right rounded-md dark:bg-slate-700 dark:ring-slate-800 bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+					class="absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-slate-700 dark:ring-slate-800"
 					aria-orientation="vertical"
 					aria-labelledby="user-menu-button"
 					tabindex="-1">

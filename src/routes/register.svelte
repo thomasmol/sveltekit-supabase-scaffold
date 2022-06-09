@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import supabase from '$lib/supabase';
-	import { user } from '$lib/stores/auth';
+	import supabaseClient from '$lib/supabase';
 	import CircularLoadingIndicator from '$lib/components/svg/CircularLoadingIndicator.svelte';
 	import PrimaryButton from '$lib/components/buttons/PrimaryButton.svelte';
 
@@ -15,12 +14,12 @@
 	const handleRegistration = async () => {
 		try {
 			loading = true;
-			let { user: userDetails, error } = await supabase.auth.signUp({
+			let { user: userDetails, error } = await supabaseClient.auth.signUp({
 				email: email,
 				password: password
 			});
 			if (error) throw error;
-			const { error: profileError } = await supabase
+			const { error: profileError } = await supabaseClient
 				.from('profiles')
 				.insert(
 					{ id: userDetails.id, first_name: firstName, last_name: lastName },

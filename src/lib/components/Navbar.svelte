@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import supabaseClient from '$lib/supabase';
+	import { error, isLoading } from '@supabase/auth-helpers-svelte';
 	import CircularLoadingIndicator from '$lib/components/svg/CircularLoadingIndicator.svelte';
 	import EmptyProfilePicture from '$lib/components/svg/EmptyProfilePicture.svelte';
 	import clickOutside from '$lib/clickOutside';
 	import { session } from '$app/stores';
-import { user } from '@supabase/auth-helpers-svelte';
 
 	let userMenuOpen = false;
 
@@ -14,21 +14,24 @@ import { user } from '@supabase/auth-helpers-svelte';
 		goto('/welcome');
 	};
 
-	const fetchProfile = async () => {
-		/* const response = await fetch('/api/profile');
-		if (response.ok) {
-			return await response.json();
-		} */
+	let profile = {};
 
+	const fetchProfile = async () => {
 		const { data, error } = await supabaseClient
 			.from('profiles')
 			.select('*')
 			.eq('id', $session.user.id)
 			.limit(1)
 			.single();
-		if (error) throw error;
-		return data;
+		//if (error) throw error;
+		profile = data;
 	};
+
+	$: {
+		if ($session.user && $session.user.id) {
+			fetchProfile();
+		}
+	}
 </script>
 
 <nav class="bg-slate-100 py-4 dark:bg-slate-800">
@@ -38,8 +41,19 @@ import { user } from '@supabase/auth-helpers-svelte';
 			class="text-lg font-medium text-slate-700 hover:text-slate-900 dark:text-slate-50 dark:hover:text-slate-200"
 			>SvelteKit + Supabase Scaffold</a>
 		<div class="relative" use:clickOutside on:clickoutside={() => (userMenuOpen = false)}>
-			{#if $session.user}
-			{#await fetchProfile()}
+			{#if !$session.user}
+				{#if $error}
+					<p>{$error.message}</p>
+				{/if}
+				<h1>{$isLoading ? `Loading...` : `Loaded!`}</h1>
+			{:else}
+				<button on:click={() => supabaseClient.auth.signOut()}>Sign out</button>
+				<p>user:</p>
+				<pre>{JSON.stringify($session.user, null, 2)}</pre>
+				<p>client-side data fetching with RLS</p>
+				<pre>{JSON.stringify(profile, null, 2)}</pre>
+			{/if}
+			<!-- {#await fetchProfile()}
 				<div class="h-8 w-8 p-2">
 					<CircularLoadingIndicator />
 				</div>
@@ -62,8 +76,8 @@ import { user } from '@supabase/auth-helpers-svelte';
 				</button>
 			{:catch error}
 				<p>{error.message}</p>
-			{/await}
-			{/if}
+			{/await} -->
+
 			{#if userMenuOpen}
 				<div
 					role="menu"

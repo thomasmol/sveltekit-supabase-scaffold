@@ -4,10 +4,10 @@ import { sequence } from '@sveltejs/kit/hooks';
 
 export const handle: Handle = sequence(
 	handleCallback({
-		cookieOptions: { lifetime: 1 * 365 * 24 * 60 * 60 }
+		cookieOptions: { lifetime: 28 * 24 * 60 * 60 }
 	}),
 	handleUser({
-		cookieOptions: { lifetime: 1 * 365 * 24 * 60 * 60 }
+		cookieOptions: { lifetime: 28 * 24 * 60 * 60 }
 	})
 );
 
